@@ -27,11 +27,11 @@ export async function POST(request: Request) {
   }
 
   try {
-    // Pega os dados enviados pelo frontend (email do cliente e o PDF em base64)
-    const { email, pdfBase64 } = await request.json();
+    // Pega os dados enviados pelo frontend (nome, email do cliente e o PDF em base64)
+    const { name, email, pdfBase64 } = await request.json();
 
-    if (!email || !pdfBase64) {
-      return NextResponse.json({ error: 'Dados incompletos. E-mail e PDF são obrigatórios.' }, { status: 400 });
+    if (!name || !email || !pdfBase64) {
+      return NextResponse.json({ error: 'Dados incompletos. Nome, e-mail e PDF são obrigatórios.' }, { status: 400 });
     }
 
     console.log(`Tentando enviar e-mails para: ${email} e ${companyEmail}`);
@@ -46,17 +46,21 @@ export async function POST(request: Request) {
         const companyEmailResult = await resend.emails.send({
           from: 'Kore Solutions <onboarding@resend.dev>', // IMPORTANTE: Use seu domínio verificado aqui
           to: [companyEmail],
-          subject: `Novo Perfil de Risco Recebido: ${email}`,
+          subject: `Novo Perfil de Risco Recebido: ${name} <${email}>`,
           html: `
             <h1>Novo Formulário Recebido</h1>
-            <p>Um novo formulário de perfil de risco foi preenchido pelo cliente com o e-mail: <strong>${email}</strong>.</p>
+            <p>Um novo formulário de perfil de risco foi preenchido pelo cliente:</p>
+            <ul>
+              <li><strong>Nome:</strong> ${name}</li>
+              <li><strong>E-mail:</strong> ${email}</li>
+            </ul>
             <p>O PDF com todas as respostas está anexado a este e-mail.</p>
             <br>
             <p><em>Esta é uma mensagem automática.</em></p>
           `,
           attachments: [
             {
-              filename: `perfil-risco-${email}.pdf`,
+              filename: `perfil-risco-${name || email}.pdf`,
               content: pdfBase64,
             },
           ],
@@ -81,7 +85,7 @@ export async function POST(request: Request) {
           subject: 'Recebemos seu Perfil de Risco - Kore Solutions',
           html: `
             <h1>Obrigado por seu interesse!</h1>
-            <p>Olá,</p>
+            <p>Olá ${name},</p>
             <p>Confirmamos o recebimento do seu formulário de perfil de risco. Nossa equipe já foi notificada e analisará suas respostas.</p>
             <p>Entraremos em contato em breve.</p>
             <br>
