@@ -214,7 +214,7 @@ export default function RiskProfileForm() {
     return (
       <main className="bg-kore-hero container mx-auto flex min-h-screen items-center justify-center p-4">
         <div className="w-full max-w-2xl text-center">
-          <img src="/kore-logo-black.svg" alt="Kore Solutions" className="mx-auto h-14 md:h-16 w-auto invert" />
+          <img src="/kore-logo-black.svg" alt="Kore Solutions" className="mx-auto h-14 md:h-16 w-auto invert font-h1" />
           <h2 className="mt-8 text-3xl font-bold text-white">Obrigado!</h2>
           <p className="mt-3 text-lg text-white/80">Seu perfil de risco foi enviado com sucesso. Enviamos uma confirmação para seu e-mail e nossa equipe entrará em contato em breve.</p>
         </div>
@@ -263,7 +263,7 @@ export default function RiskProfileForm() {
             </div>
             {formSections.map(section => (
               <div key={section.id} className="mb-10 pt-6 border-t border-slate-200">
-                <h2 className="heading-accent text-2xl md:text-3xl font-display font-bold text-slate-800">
+                <h2 className="heading-accent text-2xl md:text-3xl font-h2 text-slate-800">
                     {section.title}
                 </h2>
                 <div className="space-y-8 mt-8">
