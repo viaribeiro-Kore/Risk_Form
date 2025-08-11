@@ -1,0 +1,11 @@
+# Copy this file to .env.local and fill in your actual values
+
+# Resend API Configuration
+# Get your API key from: https://resend.com/api-keys
+RESEND_API_KEY=re_your_api_key_here
+
+# Company email where form submissions will be sent
+COMPANY_EMAIL=your-company@example.com
+
+# Optional: Custom domain for sending emails (recommended for production)
+# RESEND_DOMAIN=yourdomain.com 
