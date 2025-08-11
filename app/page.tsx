@@ -20,7 +20,7 @@ const KoreSolutionsLogo = () => (
 );
 
 export default function RiskProfileForm() {
-  const [answers, setAnswers] = useState<Record<string, any>>({});
+  const [answers, setAnswers] = useState<Record<string, string | string[]>>({});
   const [clientName, setClientName] = useState("");
   const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -273,7 +273,7 @@ export default function RiskProfileForm() {
                       <Label className="text-base font-semibold text-gray-700">{q.text}{q.required && <span className="text-red-500 ml-1">*</span>}</Label>
                       <div className="mt-4 space-y-3">
                         {q.type === 'radio' && (
-                          <RadioGroup onValueChange={(value) => handleAnswerChange(q.id, value)} value={answers[q.id]}>
+                          <RadioGroup onValueChange={(value) => handleAnswerChange(q.id, value)} value={typeof answers[q.id] === 'string' ? (answers[q.id] as string) : undefined}>
                             {q.options.map((opt) => (
                               <div key={opt} className="flex items-center space-x-3">
                                 <RadioGroupItem value={opt} id={`${q.id}-${opt}`} />
@@ -288,11 +288,14 @@ export default function RiskProfileForm() {
                               <Checkbox 
                                 id={`${q.id}-${opt}`} 
                                 onCheckedChange={(checked) => {
-                                  const current = answers[q.id] || [];
-                                  const newAnswers = checked ? [...current, opt] : current.filter((i: string) => i !== opt);
+                                  const isChecked = checked === true;
+                                  const current = Array.isArray(answers[q.id]) ? (answers[q.id] as string[]) : [];
+                                  const newAnswers = isChecked
+                                    ? [...current, opt]
+                                    : current.filter((item) => item !== opt);
                                   handleAnswerChange(q.id, newAnswers);
                                 }}
-                                checked={(answers[q.id] || []).includes(opt)}
+                                checked={Array.isArray(answers[q.id]) ? (answers[q.id] as string[]).includes(opt) : false}
                               />
                               <Label htmlFor={`${q.id}-${opt}`} className="font-normal text-gray-600 cursor-pointer">{opt}</Label>
                             </div>
