@@ -20,8 +20,8 @@ const KoreSolutionsLogo = () => (
 );
 
 export default function RiskProfileForm() {
-  type AnswerValue = string | string[];
-  const [answers, setAnswers] = useState<Record<string, AnswerValue>>({});
+  const [answers, setAnswers] = useState<Record<string, any>>({});
+  const [clientName, setClientName] = useState("");
   const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submissionStatus, setSubmissionStatus] = useState<"success" | "error" | null>(null);
@@ -36,8 +36,8 @@ export default function RiskProfileForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     // Validação para garantir que o formulário e o email estão prontos
-    if (!formRef.current || !email) {
-      alert("Por favor, preencha seu e-mail antes de enviar.");
+    if (!formRef.current || !email || !clientName) {
+      alert("Por favor, preencha seu nome e e-mail antes de enviar.");
       return;
     }
     
@@ -64,9 +64,15 @@ export default function RiskProfileForm() {
           <p style="color: #6b7280; margin: 10px 0 0 0;">Formulário de Perfil de Risco</p>
         </div>
         
-        <div style="margin-bottom: 30px;">
-          <label style="display: block; font-weight: bold; margin-bottom: 10px; color: #374151;">E-mail:</label>
-          <div style="padding: 10px; border: 1px solid #d1d5db; border-radius: 4px; background-color: #f9fafb;">${email}</div>
+        <div style="display: grid; grid-template-columns: 1fr; gap: 16px; margin-bottom: 30px;">
+          <div>
+            <label style="display: block; font-weight: bold; margin-bottom: 10px; color: #374151;">Nome:</label>
+            <div style="padding: 10px; border: 1px solid #d1d5db; border-radius: 4px; background-color: #f9fafb;">${clientName}</div>
+          </div>
+          <div>
+            <label style="display: block; font-weight: bold; margin-bottom: 10px; color: #374151;">E-mail:</label>
+            <div style="padding: 10px; border: 1px solid #d1d5db; border-radius: 4px; background-color: #f9fafb;">${email}</div>
+          </div>
         </div>
         
         ${formSections.map(section => `
@@ -186,6 +192,7 @@ export default function RiskProfileForm() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
+          name: clientName,
           email: email, 
           pdfBase64: pdfBase64 
         }),
@@ -223,13 +230,25 @@ export default function RiskProfileForm() {
   }
 
   return (
-    <main className="bg-slate-50 min-h-screen py-12 md:py-20">
+    <main className="min-h-screen bg-gradient-to-br from-[#0b1220] via-[#0b2a4f] to-[#0e1a2a] py-12 md:py-20">
       <div className="container mx-auto max-w-3xl">
         <form onSubmit={handleSubmit}>
-          <div ref={formRef} className="rounded-xl border bg-white shadow-lg p-6 md:p-10">
+          <div ref={formRef} className="rounded-2xl border border-slate-200 bg-white/95 backdrop-blur shadow-xl p-6 md:p-10">
             <div className="mb-8 text-center">
               <KoreSolutionsLogo />
               <p className="text-slate-500 mt-2">Formulário de Perfil de Risco</p>
+            </div>
+            <div className="space-y-4 mb-6">
+              <Label htmlFor="name" className="text-base font-semibold text-gray-800">Seu nome completo*</Label>
+              <Input
+                id="name"
+                type="text"
+                value={clientName}
+                onChange={(e) => setClientName(e.target.value)}
+                required
+                placeholder="Seu nome"
+                className="text-base"
+              />
             </div>
             <div className="space-y-4 mb-10">
               <Label htmlFor="email" className="text-base font-semibold text-gray-800">Seu melhor e-mail*</Label>
@@ -254,7 +273,7 @@ export default function RiskProfileForm() {
                       <Label className="text-base font-semibold text-gray-700">{q.text}{q.required && <span className="text-red-500 ml-1">*</span>}</Label>
                       <div className="mt-4 space-y-3">
                         {q.type === 'radio' && (
-                          <RadioGroup onValueChange={(value) => handleAnswerChange(q.id, value)} value={typeof answers[q.id] === 'string' ? (answers[q.id] as string) : ''}>
+                          <RadioGroup onValueChange={(value) => handleAnswerChange(q.id, value)} value={answers[q.id]}>
                             {q.options.map((opt) => (
                               <div key={opt} className="flex items-center space-x-3">
                                 <RadioGroupItem value={opt} id={`${q.id}-${opt}`} />
@@ -269,11 +288,11 @@ export default function RiskProfileForm() {
                               <Checkbox 
                                 id={`${q.id}-${opt}`} 
                                 onCheckedChange={(checked) => {
-                                  const current = Array.isArray(answers[q.id]) ? (answers[q.id] as string[]) : [];
-                                  const newAnswers = checked ? [...current, opt] : current.filter((item: string) => item !== opt);
+                                  const current = answers[q.id] || [];
+                                  const newAnswers = checked ? [...current, opt] : current.filter((i: string) => i !== opt);
                                   handleAnswerChange(q.id, newAnswers);
                                 }}
-                                checked={(Array.isArray(answers[q.id]) ? (answers[q.id] as string[]) : []).includes(opt)}
+                                checked={(answers[q.id] || []).includes(opt)}
                               />
                               <Label htmlFor={`${q.id}-${opt}`} className="font-normal text-gray-600 cursor-pointer">{opt}</Label>
                             </div>
@@ -287,7 +306,7 @@ export default function RiskProfileForm() {
             ))}
           </div>
           <div className="mt-8 flex justify-end">
-            <Button type="submit" size="lg" className="w-full md:w-auto text-lg" disabled={isSubmitting}>
+            <Button type="submit" size="lg" className="w-full md:w-auto text-lg bg-[#0047AB] hover:bg-[#003a86] text-white" disabled={isSubmitting}>
               {isSubmitting ? "Enviando..." : "Finalizar e Enviar Perfil"}
             </Button>
           </div>
