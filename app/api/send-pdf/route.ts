@@ -37,7 +37,6 @@ export async function POST(request: Request) {
     console.log(`Tentando enviar e-mails para: ${email} e ${companyEmail}`);
 
     // Check if we're using test domain (onboarding@resend.dev)
-    const isTestDomain = 'onboarding@resend.dev';
     const canSendToExternal = false; // Set to true when you verify your domain
 
     // 1. Enviar o e-mail principal para a sua empresa
