@@ -229,10 +229,13 @@ export default function RiskProfileForm() {
           <div ref={formRef} className="card-luxe p-6 md:p-10">
             <div className="mb-8">
               <div className="flex items-center justify-between">
-                <h1 className="kore-wordmark font-display text-white text-4xl md:text-5xl tracking-tight">KORE</h1>
-                <span className="text-white/70 text-sm md:text-base">Conectamos investidores tradicionais ao universo blockchain</span>
+                <img src="/kore-logo-black.svg" alt="Kore Solutions" className="h-10 md:h-12 w-auto" onError={(e) => {
+                  const target = e.currentTarget as HTMLImageElement;
+                  target.style.display = 'none';
+                }} />
+                <span className="text-slate-600 text-sm md:text-base">Conectamos investidores tradicionais ao universo blockchain</span>
               </div>
-              <p className="text-white/70 mt-6">Formulário de Perfil de Risco</p>
+              <p className="text-slate-500 mt-6">Formulário de Perfil de Risco</p>
             </div>
             <div className="space-y-4 mb-6">
               <Label htmlFor="name" className="text-base font-semibold text-gray-100">Seu nome completo*</Label>
@@ -260,20 +263,20 @@ export default function RiskProfileForm() {
             </div>
             {formSections.map(section => (
               <div key={section.id} className="mb-10 pt-6 border-t border-slate-200">
-                <h2 className="heading-accent text-2xl md:text-3xl font-display font-bold text-white">
+                <h2 className="heading-accent text-2xl md:text-3xl font-display font-bold text-slate-800">
                     {section.title}
                 </h2>
                 <div className="space-y-8 mt-8">
                   {section.questions.map((q) => (
                     <div key={q.id}>
-                      <Label className="text-base font-semibold text-white/90">{q.text}{q.required && <span className="text-red-400 ml-1">*</span>}</Label>
+                      <Label className="text-base font-semibold text-gray-700">{q.text}{q.required && <span className="text-red-500 ml-1">*</span>}</Label>
                       <div className="mt-4 space-y-3">
                         {q.type === 'radio' && (
                           <RadioGroup onValueChange={(value) => handleAnswerChange(q.id, value)} value={typeof answers[q.id] === 'string' ? (answers[q.id] as string) : undefined}>
                             {q.options.map((opt) => (
                               <div key={opt} className="flex items-center space-x-3">
                                 <RadioGroupItem value={opt} id={`${q.id}-${opt}`} />
-                                <Label htmlFor={`${q.id}-${opt}`} className="font-normal text-white/70 cursor-pointer">{opt}</Label>
+                                <Label htmlFor={`${q.id}-${opt}`} className="font-normal text-gray-600 cursor-pointer">{opt}</Label>
                               </div>
                             ))}
                           </RadioGroup>
@@ -293,7 +296,7 @@ export default function RiskProfileForm() {
                                 }}
                                 checked={Array.isArray(answers[q.id]) ? (answers[q.id] as string[]).includes(opt) : false}
                               />
-                              <Label htmlFor={`${q.id}-${opt}`} className="font-normal text-white/70 cursor-pointer">{opt}</Label>
+                              <Label htmlFor={`${q.id}-${opt}`} className="font-normal text-gray-600 cursor-pointer">{opt}</Label>
                             </div>
                           ))
                         )}
@@ -309,7 +312,7 @@ export default function RiskProfileForm() {
               {isSubmitting ? "Enviando..." : "Finalizar e Enviar Perfil"}
             </Button>
           </div>
-          {submissionStatus === 'error' && <p className="text-red-400 mt-4 text-right">Ocorreu um erro ao enviar. Por favor, tente novamente.</p>}
+          {submissionStatus === 'error' && <p className="text-red-500 mt-4 text-right">Ocorreu um erro ao enviar. Por favor, tente novamente.</p>}
         </form>
       </div>
     </main>
