@@ -12,13 +12,6 @@ import { Input } from "@/components/ui/input";
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 
-// Componente para o Logo
-const KoreSolutionsLogo = () => (
-  <h1 className="text-4xl font-bold tracking-tight" style={{ color: '#0047AB' }}>
-    Kore Solutions
-  </h1>
-);
-
 export default function RiskProfileForm() {
   const [answers, setAnswers] = useState<Record<string, string | string[]>>({});
   const [clientName, setClientName] = useState("");
@@ -219,27 +212,30 @@ export default function RiskProfileForm() {
 
   if (submissionStatus === 'success') {
     return (
-      <main className="container mx-auto flex min-h-screen items-center justify-center p-4">
+      <main className="bg-kore-hero container mx-auto flex min-h-screen items-center justify-center p-4">
         <div className="w-full max-w-2xl text-center">
-          <KoreSolutionsLogo />
-          <h2 className="mt-8 text-3xl font-bold text-gray-800">Obrigado!</h2>
-          <p className="mt-3 text-lg text-gray-600">Seu perfil de risco foi enviado com sucesso. Enviamos uma confirmação para seu e-mail e nossa equipe entrará em contato em breve.</p>
+          <h1 className="kore-wordmark font-display text-5xl md:text-6xl" style={{ color: '#ffffff' }}>KORE</h1>
+          <h2 className="mt-8 text-3xl font-bold text-white">Obrigado!</h2>
+          <p className="mt-3 text-lg text-white/80">Seu perfil de risco foi enviado com sucesso. Enviamos uma confirmação para seu e-mail e nossa equipe entrará em contato em breve.</p>
         </div>
       </main>
     );
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-[#0b1220] via-[#0b2a4f] to-[#0e1a2a] py-12 md:py-20">
+    <main className="min-h-screen bg-kore-hero py-12 md:py-20">
       <div className="container mx-auto max-w-3xl">
         <form onSubmit={handleSubmit}>
-          <div ref={formRef} className="rounded-2xl border border-slate-200 bg-white/95 backdrop-blur shadow-xl p-6 md:p-10">
-            <div className="mb-8 text-center">
-              <KoreSolutionsLogo />
-              <p className="text-slate-500 mt-2">Formulário de Perfil de Risco</p>
+          <div ref={formRef} className="card-luxe p-6 md:p-10">
+            <div className="mb-8">
+              <div className="flex items-center justify-between">
+                <h1 className="kore-wordmark font-display text-white text-4xl md:text-5xl tracking-tight">KORE</h1>
+                <span className="text-white/70 text-sm md:text-base">Conectamos investidores tradicionais ao universo blockchain</span>
+              </div>
+              <p className="text-white/70 mt-6">Formulário de Perfil de Risco</p>
             </div>
             <div className="space-y-4 mb-6">
-              <Label htmlFor="name" className="text-base font-semibold text-gray-800">Seu nome completo*</Label>
+              <Label htmlFor="name" className="text-base font-semibold text-gray-100">Seu nome completo*</Label>
               <Input
                 id="name"
                 type="text"
@@ -251,7 +247,7 @@ export default function RiskProfileForm() {
               />
             </div>
             <div className="space-y-4 mb-10">
-              <Label htmlFor="email" className="text-base font-semibold text-gray-800">Seu melhor e-mail*</Label>
+              <Label htmlFor="email" className="text-base font-semibold text-gray-100">Seu e-mail*</Label>
               <Input
                 id="email"
                 type="email"
@@ -264,20 +260,20 @@ export default function RiskProfileForm() {
             </div>
             {formSections.map(section => (
               <div key={section.id} className="mb-10 pt-6 border-t border-slate-200">
-                <h2 className="text-2xl font-bold text-slate-800 border-l-4 pl-4" style={{ borderColor: '#0047AB' }}>
+                <h2 className="heading-accent text-2xl md:text-3xl font-display font-bold text-white">
                     {section.title}
                 </h2>
                 <div className="space-y-8 mt-8">
                   {section.questions.map((q) => (
                     <div key={q.id}>
-                      <Label className="text-base font-semibold text-gray-700">{q.text}{q.required && <span className="text-red-500 ml-1">*</span>}</Label>
+                      <Label className="text-base font-semibold text-white/90">{q.text}{q.required && <span className="text-red-400 ml-1">*</span>}</Label>
                       <div className="mt-4 space-y-3">
                         {q.type === 'radio' && (
                           <RadioGroup onValueChange={(value) => handleAnswerChange(q.id, value)} value={typeof answers[q.id] === 'string' ? (answers[q.id] as string) : undefined}>
                             {q.options.map((opt) => (
                               <div key={opt} className="flex items-center space-x-3">
                                 <RadioGroupItem value={opt} id={`${q.id}-${opt}`} />
-                                <Label htmlFor={`${q.id}-${opt}`} className="font-normal text-gray-600 cursor-pointer">{opt}</Label>
+                                <Label htmlFor={`${q.id}-${opt}`} className="font-normal text-white/70 cursor-pointer">{opt}</Label>
                               </div>
                             ))}
                           </RadioGroup>
@@ -297,7 +293,7 @@ export default function RiskProfileForm() {
                                 }}
                                 checked={Array.isArray(answers[q.id]) ? (answers[q.id] as string[]).includes(opt) : false}
                               />
-                              <Label htmlFor={`${q.id}-${opt}`} className="font-normal text-gray-600 cursor-pointer">{opt}</Label>
+                              <Label htmlFor={`${q.id}-${opt}`} className="font-normal text-white/70 cursor-pointer">{opt}</Label>
                             </div>
                           ))
                         )}
@@ -309,11 +305,11 @@ export default function RiskProfileForm() {
             ))}
           </div>
           <div className="mt-8 flex justify-end">
-            <Button type="submit" size="lg" className="w-full md:w-auto text-lg bg-[#0047AB] hover:bg-[#003a86] text-white" disabled={isSubmitting}>
+            <Button type="submit" size="lg" className="w-full md:w-auto text-lg bg-[#0047AB] hover:bg-[#003a86] text-white shadow-lg shadow-blue-900/30" disabled={isSubmitting}>
               {isSubmitting ? "Enviando..." : "Finalizar e Enviar Perfil"}
             </Button>
           </div>
-          {submissionStatus === 'error' && <p className="text-red-500 mt-4 text-right">Ocorreu um erro ao enviar. Por favor, tente novamente.</p>}
+          {submissionStatus === 'error' && <p className="text-red-400 mt-4 text-right">Ocorreu um erro ao enviar. Por favor, tente novamente.</p>}
         </form>
       </div>
     </main>
