@@ -214,7 +214,7 @@ export default function RiskProfileForm() {
     return (
       <main className="bg-kore-hero container mx-auto flex min-h-screen items-center justify-center p-4">
         <div className="w-full max-w-2xl text-center">
-          <h1 className="kore-wordmark font-display text-5xl md:text-6xl" style={{ color: '#ffffff' }}>KORE</h1>
+          <img src="/kore-logo-black.svg" alt="Kore Solutions" className="mx-auto h-14 md:h-16 w-auto invert" />
           <h2 className="mt-8 text-3xl font-bold text-white">Obrigado!</h2>
           <p className="mt-3 text-lg text-white/80">Seu perfil de risco foi enviado com sucesso. Enviamos uma confirmação para seu e-mail e nossa equipe entrará em contato em breve.</p>
         </div>
@@ -238,7 +238,7 @@ export default function RiskProfileForm() {
               <p className="text-slate-500 mt-6">Formulário de Perfil de Risco</p>
             </div>
             <div className="space-y-4 mb-6">
-              <Label htmlFor="name" className="text-base font-semibold text-gray-100">Seu nome completo*</Label>
+              <Label htmlFor="name" className="text-base font-semibold text-gray-800">Seu nome completo*</Label>
               <Input
                 id="name"
                 type="text"
@@ -250,7 +250,7 @@ export default function RiskProfileForm() {
               />
             </div>
             <div className="space-y-4 mb-10">
-              <Label htmlFor="email" className="text-base font-semibold text-gray-100">Seu e-mail*</Label>
+              <Label htmlFor="email" className="text-base font-semibold text-gray-800">Seu e-mail*</Label>
               <Input
                 id="email"
                 type="email"
