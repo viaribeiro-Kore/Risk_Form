@@ -131,9 +131,6 @@ export default function RiskProfileForm() {
       // Remove the temporary element
       document.body.removeChild(pdfElement);
       
-      // Converte o canvas para uma imagem no formato JPEG com qualidade reduzida
-      const imgData = canvas.toDataURL('image/jpeg', 0.7); // Changed to JPEG with 70% quality
-
       // 2. Cria um novo documento PDF no formato A4
       const pdf = new jsPDF({
         orientation: 'portrait', // 'p' ou 'portrait'
@@ -168,6 +165,9 @@ export default function RiskProfileForm() {
         tempCanvas.height = sourceHeight;
         
         // Draw the portion of the original canvas to the temp canvas
+        if (!tempCtx) {
+          throw new Error('Failed to get 2D context for temporary canvas.');
+        }
         tempCtx.drawImage(canvas, 0, sourceY, canvas.width, sourceHeight, 0, 0, canvas.width, sourceHeight);
         
         // Convert temp canvas to image
